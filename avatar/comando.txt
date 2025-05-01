@@ -1,0 +1,52 @@
+Preparação de um projeto com IA
+
+- docker run -it --rm debian:latest
+- apt-get update &&  apt-get install  curl zip unzip -y
+- curl -s "https://get.sdkman.io" | bash
+- source "/root/.sdkman/bin/sdkman-init.sh" #Habilita no terminal o sdk
+- sdk list java
+- sdk install java 17.0.7-tem
+- sdk use java 17.0.7-tem
+- java --version
+- env | grep JAVA_HOME #Verifica se há a variável de ambiente criada
+- JAVA_HOME=/root/.sdkman/candidates/java/17.0.7-tem #configuração automática
+- sdk install java 22.3.2.r17-grl # Instalação da GraalVM para o Java 17
+(No caso, ser terá duas versões de Java que podem ser alterada com sdk use).
+- sdk use java 22.3.2.r17-grl
+- env | grep GRAALVM_HOME
+- export GRAALVM_HOME=/root/.sdkman/candidates/java/22.3.2.r17-grl
+- export GRAALVM_HOME=/home/weslleyprado/.sdkman/candidates/java/22.3.2.r17-grl
+- gu install native-image # Pluggin adicional para o GraalVM
+- sdk list quarkus
+- sdk install quarkus 3.0.3.Final
+- which quarkus
+- quarkus --version
+
+exit
+
+quarkus create app me.dio:avatar --no-code #gerado sem código algum com --no-code
+
+# application.properties
+quarkus.shutdonw.timeout=5S
+
+quarkus ext add io.quarkus:quarkus-resteasy-jackson
+quarkus extension add quarkus-resteasy-reactive-jackson #permite requisição http, serialização e deserialização com jackson
+
+quarkus dev #para rodar em desenvolvimento
+http://localhost:8080/q/dev-ui
+
+mvn clean package #build
+docker build -f src/main/docker/Dockerfile.jvm . #Criação da imagem docker
+(O ponto . no final representa o diretório de contexto para o build — essencial para que o Docker encontre arquivos referenciados no Dockerfile.)
+
+mvn clean package -Pnative #build native image não precisa de Java
+./avatar-1.0.0-SNAPSHOT-runner
+
+docker images | grep dio #comparar os tamanhos
+
+
+Salva em uma pasta especifica
+docker build -f src/main/docker/Dockerfile.native -t dio/native .
+docker build -f src/main/docker/Dockerfile.jvm -t dio/jvm .
+
+
