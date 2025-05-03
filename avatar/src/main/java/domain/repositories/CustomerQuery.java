@@ -1,0 +1,30 @@
+package domain.repositories;
+
+import java.util.Optional;
+import java.util.Set;
+
+public class CustomerQuery {
+
+    private final Optional<Set<String>> ids;
+
+    public CustomerQuery(Optional<Set<String>> ids) {
+        this.ids = ids;
+    }
+
+    public static class Builder{
+        private  Optional<Set<String>> ids = Optional.empty();
+
+        public Builder withIds(String id){
+            return withIds(Optional.of(Set.of(id)));
+        }
+
+        public Builder withIds(Optional<Set<String>> ids){
+            this.ids =ids;
+            return this;
+        }
+
+        public CustomerQuery build(){
+            return new CustomerQuery(ids);
+        }
+    }
+}
