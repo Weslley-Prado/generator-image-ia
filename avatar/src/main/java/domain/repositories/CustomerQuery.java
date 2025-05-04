@@ -23,6 +23,10 @@ public class CustomerQuery {
             return this;
         }
 
+        public Builder withId(String id) {
+            return withIds(Optional.of(Set.of(id)));
+        }
+
         public CustomerQuery build(){
             return new CustomerQuery(ids);
         }
