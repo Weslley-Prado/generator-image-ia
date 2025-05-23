@@ -1,4 +1,4 @@
-package infrastructure.resource;
+package infrastructure.resources;
 
 import application.ApplicationService;
 import application.dto.Customer;
